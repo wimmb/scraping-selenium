@@ -14,3 +14,18 @@ def social_login_required(func):
         # Call the original function
         return func(self, *args, **kwargs)
     return wrapper
+
+
+def social_register_required(func):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        # Check if user is already logged in
+        if self.is_registered_in:
+            return func(self, *args, **kwargs)
+
+        # If not logged in, perform social login
+        self.social_network_register()
+
+        # Call the original function
+        return func(self, *args, **kwargs)
+    return wrapper
